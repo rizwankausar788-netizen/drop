@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DROP — Download Media. Simply.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050604;--tx:#F4F4F2;--tx2:#A6A9A2;--ac:#C6FF3D;--ac-d:rgba(198,255,61,.14);--ln:rgba(255,255,255,.1);--gl:rgba(255,255,255,.05);--err:#ff7a6b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--tx);font:400 16px/1.5 'Space Grotesk',system-ui,sans-serif;overflow-x:hidden;position:relative}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px;border-radius:12px}
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg::before{content:"";position:absolute;left:50%;top:-10%;width:900px;height:700px;max-width:160vw;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(198,255,61,.13),transparent)}
+.grid{position:absolute;left:-25%;right:-25%;bottom:-5%;height:55%;background:linear-gradient(var(--ln) 1px,transparent 1px) 0 0/100% 56px,linear-gradient(90deg,var(--ln) 1px,transparent 1px) 0 0/56px 100%;transform:perspective(500px) rotateX(62deg);transform-origin:bottom;opacity:.22;-webkit-mask-image:linear-gradient(transparent,#000 70%);mask-image:linear-gradient(transparent,#000 70%)}
+.grain{position:absolute;inset:0;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);background:rgba(198,255,61,.07);animation:drift 18s ease-in-out infinite alternate}
+.b1{width:260px;height:260px;left:-60px;top:55%}.b2{width:220px;height:220px;right:-40px;top:25%;animation-delay:-8s}
+@keyframes drift{to{transform:translate3d(40px,-50px,0)}}
+.page{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:0 20px;min-height:100svh;display:flex;flex-direction:column}
+nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.logo{display:flex;align-items:center;gap:10px;font:800 20px 'Sora',sans-serif;letter-spacing:.04em}
+.logo svg{width:30px;height:30px}
+.nav-a{color:var(--tx2);padding:8px 14px;border-radius:99px;transition:color .2s,background .2s}.nav-a:hover{color:var(--tx);background:var(--gl)}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px 0 56px;position:relative}
+h1{font:800 clamp(44px,9.5vw,96px)/.98 'Sora',sans-serif;letter-spacing:-.035em;margin:0 0 18px}
+h1 em{font-style:normal;color:var(--ac)}
+.sub{color:var(--tx2);font-size:clamp(15px,2.4vw,19px);max-width:440px;margin:0 auto 34px}
+.orb{position:absolute;top:2%;left:50%;width:min(520px,92vw);aspect-ratio:1;margin-left:calc(min(520px,92vw)/-2);z-index:0;animation:float 7s ease-in-out infinite;opacity:.9;transition:opacity .5s,transform .5s}
+body[data-busy="1"] .orb{opacity:.25}
+@keyframes float{50%{transform:translate3d(0,-16px,0) rotate(2deg)}}
+.hero{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;align-items:center}
+.box{position:relative;width:100%;max-width:700px;border-radius:28px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border:1px solid var(--ln);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 30px 80px rgba(0,0,0,.6);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:transform .35s cubic-bezier(.3,1.4,.5,1),border-color .25s,box-shadow .25s}
+.box:focus-within{border-color:rgba(198,255,61,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 0 4px var(--ac-d),0 0 60px rgba(198,255,61,.18)}
+.box.pulse{animation:pulse .5s}
+@keyframes pulse{40%{transform:scale(1.02);box-shadow:0 0 70px rgba(198,255,61,.35)}}
+.box.bad{border-color:rgba(255,122,107,.6);animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+form{display:flex;align-items:center;gap:8px;padding:10px 10px 10px 18px}
+form>svg{flex:none;width:22px;height:22px;color:var(--tx2)}
+input{flex:1;min-width:0;background:none;border:0;color:var(--tx);font:inherit;font-size:17px;padding:12px 4px;text-overflow:ellipsis}
+input:focus{outline:0}input::placeholder{color:#6f736b}
+.chip{padding:11px 16px;border-radius:16px;background:var(--gl);border:1px solid var(--ln);font-weight:500;font-size:15px;transition:background .2s,transform .15s}
+.chip:hover{background:rgba(255,255,255,.1)}.chip:active{transform:scale(.96)}
+.go{position:relative;flex:none;height:52px;padding:0 20px 0 22px;border-radius:18px;display:flex;align-items:center;justify-content:center;gap:10px;overflow:hidden;background:linear-gradient(135deg,#D8FF6B,#C6FF3D 55%,#A8E81C);color:#0a0d02;font:700 16px 'Space Grotesk',sans-serif;box-shadow:0 8px 28px rgba(198,255,61,.3),inset 0 1px 0 rgba(255,255,255,.6);transition:transform .2s,box-shadow .2s;will-change:transform}
+.go::before{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.7),transparent);transform:skewX(-20deg);animation:shine 3.6s ease-in-out infinite}
+@keyframes shine{0%,55%{left:-60%}100%{left:130%}}
+.go.rdy{animation:ring 1.9s ease-out infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(198,255,61,.55),0 8px 28px rgba(198,255,61,.3)}100%{box-shadow:0 0 0 14px rgba(198,255,61,0),0 8px 28px rgba(198,255,61,.3)}}
+.go svg{position:relative;width:20px;height:20px;transition:transform .25s cubic-bezier(.3,1.4,.5,1)}
+.go-t{position:relative}.go-t .m{display:none}
+.go:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(198,255,61,.55),inset 0 1px 0 rgba(255,255,255,.6)}
+.go:hover svg{transform:translateX(5px)}
+.go:active{transform:scale(.95)}
+.go.fire svg{animation:fly .6s ease}
+@keyframes fly{40%{transform:translateX(30px);opacity:0}41%{transform:translateX(-30px);opacity:0}100%{transform:none;opacity:1}}
+.msg{min-height:26px;margin-top:16px;font-size:15px;color:var(--tx2);transition:color .2s}
+.msg.err{color:var(--err)}
+.hint{margin-top:6px;font-size:13px;color:#6f736b}
+/* detection */
+.det{position:relative;overflow:hidden;padding:22px;display:flex;align-items:center;gap:18px;text-align:left}
+.det::after{content:"";position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--ac),transparent);box-shadow:0 0 18px var(--ac);animation:scan 1.6s ease-in-out infinite}
+@keyframes scan{0%{top:0}50%{top:calc(100% - 2px)}100%{top:0}}
+.ring{width:56px;height:56px;flex:none}.ring circle{fill:none;stroke-width:4}
+.ring .t{stroke:var(--ln)}.ring .p{stroke:var(--ac);stroke-linecap:round;stroke-dasharray:151;stroke-dashoffset:110;transform-origin:center;animation:spin 1.1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.det-u{color:var(--tx2);font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.det b{display:block;font-size:18px;font-weight:500}
+.det>div{min-width:0}
+/* result */
+.res{width:100%;max-width:700px;text-align:left}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:7px 14px 7px 8px;border-radius:99px;background:var(--ac-d);border:1px solid rgba(198,255,61,.35);font-size:14px;margin-bottom:14px;animation:slide .5s cubic-bezier(.2,1,.3,1)}
+@keyframes slide{from{opacity:0;transform:translateX(-14px)}}
+.badge i{width:24px;height:24px;border-radius:50%;background:var(--ac);color:#0a0d02;display:grid;place-items:center;font:800 12px 'Sora',sans-serif;font-style:normal}
+.card{display:flex;gap:18px;padding:16px;animation:rise .5s cubic-bezier(.2,1,.3,1)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+.th{flex:none;width:200px;aspect-ratio:16/10;border-radius:18px;background:#14170f;position:relative;overflow:hidden;display:grid;place-items:center}
+.th svg{width:34px;height:34px;color:rgba(255,255,255,.7)}
+.info{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.info .pl{color:var(--ac);font-size:14px;font-weight:500}
+.info h2{margin:0;font:700 clamp(18px,3vw,24px)/1.2 'Space Grotesk',sans-serif}
+.info p{margin:0;color:var(--tx2);font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sk{background:linear-gradient(90deg,#14170f 25%,#20241a 50%,#14170f 75%) 0 0/200% 100%;animation:sh 1.2s linear infinite;border-radius:10px}
+@keyframes sh{to{background-position:-200% 0}}
+.fh{margin:22px 4px 10px;color:var(--tx2);font-size:14px}
+.fmts{display:flex;gap:10px;overflow-x:auto;padding:4px;scrollbar-width:none;scroll-snap-type:x mandatory}
+.fmts::-webkit-scrollbar{display:none}
+.fm{flex:none;scroll-snap-align:start;min-width:112px;padding:14px 16px;text-align:left;border-radius:18px;background:var(--gl);border:1px solid var(--ln);transition:border-color .2s,box-shadow .2s,background .2s,transform .15s}
+.fm:active{transform:scale(.97)}
+.fm b{display:block;font-size:16px}.fm span{color:var(--tx2);font-size:13px}
+.fm[aria-checked="true"]{border-color:var(--ac);background:var(--ac-d);box-shadow:0 0 28px rgba(198,255,61,.2)}
+.act{display:flex;gap:12px;margin-top:20px;align-items:stretch}
+.dl{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;height:58px;border-radius:20px;background:var(--ac);color:#0a0d02;font:700 17px 'Space Grotesk',sans-serif;position:relative;overflow:hidden;box-shadow:0 10px 36px rgba(198,255,61,.28);transition:transform .2s,box-shadow .2s;will-change:transform}
+.dl:hover{transform:translateY(-2px);box-shadow:0 14px 44px rgba(198,255,61,.5)}.dl:hover svg{transform:translateY(3px)}.dl:active{transform:scale(.98)}
+.dl svg{width:20px;height:20px;transition:transform .2s}
+.dl .bar{position:absolute;left:0;bottom:0;height:4px;background:#0a0d02;width:0;transition:width .2s}
+.dl:disabled{cursor:default;transform:none}
+.sec{height:58px;padding:0 22px;border-radius:20px;border:1px solid var(--ln);background:var(--gl);transition:background .2s}.sec:hover{background:rgba(255,255,255,.1)}
+.ok{display:flex;align-items:center;gap:10px;margin-top:14px;color:var(--ac);animation:rise .4s}
+[hidden]{display:none!important}
+.dlg{border:1px solid var(--ln);background:#0c0e08;color:var(--tx);border-radius:24px;max-width:400px;padding:26px}
+.dlg::backdrop{background:rgba(0,0,0,.7)}
+@media(max-width:640px){
+.page{padding:0 16px}
+form{flex-wrap:wrap;padding:14px}
+form>svg{display:none}
+input{flex:1 1 100%;order:1;padding:10px 6px;font-size:16px}
+.chip{order:2;flex:1;min-height:50px}
+.go{order:3;flex:2;height:50px;border-radius:16px}.go-t .m{display:inline}
+.card{flex-direction:column}.th{width:100%}
+.act{flex-direction:column}.sec{height:50px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.orb,.blob{animation:none}}
+</style>
+</head>
+<body data-busy="0">
+<div class="bg" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="grid"></div><div class="grain"></div></div>
+<div class="page">
+<nav>
+ <div class="logo"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="10" stroke="#C6FF3D" stroke-width="2"/><path d="M12 9.5v8l7-4z" fill="#C6FF3D"/><path d="M16 21v-3M12.5 22h7" stroke="#F4F4F2" stroke-width="2" stroke-linecap="round"/></svg>DROP</div>
+ <button class="nav-a" id="about">About</button>
+</nav>
+<main>
+ <svg class="orb" viewBox="0 0 400 400" fill="none" aria-hidden="true">
+  <defs><radialGradient id="g" cx="40%" cy="35%"><stop offset="0" stop-color="#C6FF3D" stop-opacity=".5"/><stop offset=".6" stop-color="#C6FF3D" stop-opacity=".06"/><stop offset="1" stop-color="#C6FF3D" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="200" cy="200" r="190" fill="url(#g)"/>
+  <circle cx="200" cy="200" r="130" stroke="rgba(255,255,255,.12)"/><circle cx="200" cy="200" r="170" stroke="rgba(198,255,61,.2)" stroke-dasharray="3 9"/>
+  <g stroke="rgba(255,255,255,.35)" stroke-width="2" fill="rgba(255,255,255,.05)"><rect x="82" y="96" width="78" height="60" rx="14"/><circle cx="305" cy="130" r="34"/><rect x="262" y="262" width="74" height="56" rx="14"/><circle cx="110" cy="290" r="30"/></g>
+  <path d="M108 112l22 14-22 14z" fill="#C6FF3D"/><path d="M296 120a8 8 0 0 1 14 0l6 8m-26 0l6-8m-4 22l10-6" stroke="#C6FF3D" stroke-width="3" stroke-linecap="round"/><path d="M299 276v22m-10-8l10 10 10-10" stroke="#C6FF3D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#C6FF3D"><circle cx="60" cy="200" r="2"/><circle cx="340" cy="210" r="3"/><circle cx="200" cy="40" r="2"/><circle cx="170" cy="365" r="2.5"/></g>
+ </svg>
+ <div class="hero">
+  <h1>Download Media.<br><em>Simply.</em></h1>
+  <p class="sub">Paste a link. We'll detect the source and show you what's available.</p>
+  <div id="stage" style="width:100%;display:flex;flex-direction:column;align-items:center"></div>
+  <div class="msg" id="msg" role="status" aria-live="polite">Paste a link to get started.</div>
+  <div class="hint" id="hint">Demo mode — try a YouTube, Instagram, TikTok, X, Reddit link…</div>
+ </div>
+</main>
+</div>
+<dialog class="dlg" id="dlg"><h2 style="margin:0 0 8px;font-family:Sora">About DROP</h2><p style="color:var(--tx2)">One link in, available formats out. DROP only shows what the source allows and never bypasses private or protected content.</p><button class="chip" id="dx">Close</button></dialog>
+
+<script>
+/* ---------- types / config ---------- */
+const PLATFORMS={youtube:{n:'YouTube',h:['youtube.com','youtu.be'],g:'Yt'},instagram:{n:'Instagram',h:['instagram.com'],g:'Ig'},facebook:{n:'Facebook',h:['facebook.com','fb.watch'],g:'Fb'},threads:{n:'Threads',h:['threads.net','threads.com'],g:'Th'},tiktok:{n:'TikTok',h:['tiktok.com'],g:'Tk'},x:{n:'X',h:['x.com','twitter.com'],g:'X'},pinterest:{n:'Pinterest',h:['pinterest.com','pin.it'],g:'Pi'},reddit:{n:'Reddit',h:['reddit.com','redd.it'],g:'Rd'}};
+const MSG={EMPTY:'Paste a link to get started.',INVALID_URL:'Please enter a valid media link.',DETECTING:'Detecting source…',UNSUPPORTED:'Unsupported or unavailable media',PRIVATE:'This content is private or needs a login, so it can’t be downloaded.',UNAVAILABLE:'This media is no longer available.',TIMEOUT:'That took too long. Please try again.',RATE_LIMIT:'Too many requests. Wait a moment and try again.',NETWORK:'Check your connection and try again.',FORMAT:'That format isn’t available. Pick another one.',ERROR:'Something went wrong.'};
+
+/* ---------- service layer (services/mediaApi) ----------
+   To go live: set API_BASE and return the same shape from your backend:
+   POST {API_BASE}/detect {url} -> {platform,title,thumbnail,mediaType,duration,resolution,sourceUrl,formats:[{id,label,detail}]}
+   GET/stream {API_BASE}/download?... with progress callbacks.                                  */
+const API_BASE='';  // '' = demo mode
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const api={
+ async detectMedia(url){return API_BASE?realDetect(url):mockDetect(url)},
+ async download(url,fmt,onProgress){return API_BASE?realDownload(url,fmt,onProgress):mockDownload(fmt,onProgress)}
+};
+async function realDetect(url){
+ try{const r=await fetch(API_BASE+'/detect',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})});
+  if(!r.ok)throw {code:{401:'PRIVATE',403:'PRIVATE',404:'UNAVAILABLE',422:'UNSUPPORTED',429:'RATE_LIMIT',408:'TIMEOUT'}[r.status]||'ERROR'};
+  return await r.json()}catch(e){throw e.code?e:{code:'NETWORK'}}
+}
+async function realDownload(){throw {code:'ERROR'}}
+/* mock (demo only) */
+function platformOf(u){const h=u.hostname.replace(/^(www|m|mobile)\./,'');return Object.keys(PLATFORMS).find(k=>PLATFORMS[k].h.some(x=>h===x||h.endsWith('.'+x)))}
+async function mockDetect(raw){
+ const u=new URL(raw);await sleep(1500);const p=platformOf(u);
+ if(!p)throw {code:'UNSUPPORTED'};
+ if(/private/i.test(raw))throw {code:'PRIVATE'};if(/gone|deleted/i.test(raw))throw {code:'UNAVAILABLE'};if(/fail/i.test(raw))throw {code:'ERROR'};
+ await sleep(1100);
+ const img=p==='pinterest'||/\/p\/|status|pin/.test(u.pathname)&&p!=='youtube';
+ const vid=[{id:'720',label:'MP4',detail:'720p'},{id:'1080',label:'MP4',detail:'1080p'},{id:'mp3',label:'Audio',detail:'MP3'}];
+ return {platform:p,title:{youtube:'Sunrise timelapse over the Dolomites',instagram:'Beautiful view from the mountains',tiktok:'Street food in 30 seconds',x:'Launch day, behind the scenes',reddit:'TIL how glass is really made',facebook:'Weekend market highlights',threads:'Studio desk setup tour',pinterest:'Minimal workspace inspiration'}[p],thumbnail:null,mediaType:img?'image':'video',duration:img?null:'0:24',resolution:img?'2048×1365':'1080p',sourceUrl:u.hostname+u.pathname.slice(0,18)+'…',formats:img?[{id:'orig',label:'Image',detail:'Original'},{id:'jpg',label:'JPG',detail:'Compressed'}]:vid};
+}
+async function mockDownload(f,cb){const s=['Preparing…','Downloading…','Processing…'];for(let i=0;i<=20;i++){cb(i*5,s[i<3?0:i<16?1:2]);await sleep(i<3?260:150)}}
+
+/* ---------- state ---------- */
+const $=s=>document.querySelector(s),stage=$('#stage'),msg=$('#msg'),hint=$('#hint');
+let S={state:'EMPTY',url:'',data:null,fmt:null,run:0};
+const ic={link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>',arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>',play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',img:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 9"/></svg>'};
+function setMsg(t,err){msg.textContent=t;msg.className='msg'+(err?' err':'')}
+function go(state){S.state=state;document.body.dataset.busy=['DETECTING','DETECTED','LOADING_PREVIEW','READY','DOWNLOADING','SUCCESS'].includes(state)?'1':'0';document.body.dataset.state=state}
+function errText(code){return MSG[code]||MSG.ERROR}
+
+/* ---------- components ---------- */
+function UrlInput(val){
+ stage.innerHTML=`<div class="box" id="box"><form id="f" novalidate><span aria-hidden="true">${ic.link}</span><label class="sr" for="u" style="position:absolute;left:-9999px">Media link</label><input id="u" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Paste a video or image link…" value="${val.replace(/"/g,'&quot;')}"><button type="button" class="chip" id="clr" aria-label="Clear link" ${val?'':'hidden'}>Clear</button><button type="button" class="chip" id="paste" aria-label="Paste from clipboard">Paste</button><button class="go" aria-label="Detect media"><span class="go-t">Detect<span class="m"> Media</span></span>${ic.arrow}</button></form></div>`;
+ const u=$('#u'),box=$('#box');
+ const sync=()=>{$('#clr').hidden=!u.value;if(S.state==='INVALID_URL'||S.state==='UNSUPPORTED'||S.state==='ERROR'||S.state==='EMPTY'||S.state==='INPUT'){go(u.value?'INPUT':'EMPTY');setMsg(u.valu
