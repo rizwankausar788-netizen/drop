@@ -28,7 +28,7 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0
 .logo svg{width:30px;height:30px}
 .nav-a{color:var(--tx2);padding:8px 14px;border-radius:99px;transition:color .2s,background .2s}.nav-a:hover{color:var(--tx);background:var(--gl)}
 main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px 0 56px;position:relative}
-h1{font:800 clamp(44px,9.5vw,96px)/.98 'Sora',sans-serif;letter-spacing:-.035em;margin:0 0 18px}
+h1{font:800 clamp(34px,9vw,96px)/1 'Sora',sans-serif;letter-spacing:-.035em;margin:0 0 18px}
 h1 em{font-style:normal;color:var(--ac)}
 .sub{color:var(--tx2);font-size:clamp(15px,2.4vw,19px);max-width:440px;margin:0 auto 34px}
 .orb{position:absolute;top:2%;left:50%;width:min(520px,92vw);aspect-ratio:1;margin-left:calc(min(520px,92vw)/-2);z-index:0;animation:float 7s ease-in-out infinite;opacity:.9;transition:opacity .5s,transform .5s}
@@ -139,7 +139,7 @@ input{flex:1 1 100%;order:1;padding:10px 6px;font-size:16px}
   <p class="sub">Paste a link. We'll detect the source and show you what's available.</p>
   <div id="stage" style="width:100%;display:flex;flex-direction:column;align-items:center"></div>
   <div class="msg" id="msg" role="status" aria-live="polite">Paste a link to get started.</div>
-  <div class="hint" id="hint">Demo mode — try a YouTube, Instagram, TikTok, X, Reddit link…</div>
+  <div class="hint" id="hint">Demo mode — try a YouTube, Instagram, TikTok, X, Reddit link… (v3)</div>
  </div>
 </main>
 </div>
@@ -191,4 +191,4 @@ function errText(code){return MSG[code]||MSG.ERROR}
 function UrlInput(val){
  stage.innerHTML=`<div class="box" id="box"><form id="f" novalidate><span aria-hidden="true">${ic.link}</span><label class="sr" for="u" style="position:absolute;left:-9999px">Media link</label><input id="u" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Paste a video or image link…" value="${val.replace(/"/g,'&quot;')}"><button type="button" class="chip" id="clr" aria-label="Clear link" ${val?'':'hidden'}>Clear</button><button type="button" class="chip" id="paste" aria-label="Paste from clipboard">Paste</button><button class="go" aria-label="Detect media"><span class="go-t">Detect<span class="m"> Media</span></span>${ic.arrow}</button></form></div>`;
  const u=$('#u'),box=$('#box');
- const sync=()=>{$('#clr').hidden=!u.value;if(S.state==='INVALID_URL'||S.state==='UNSUPPORTED'||S.state==='ERROR'||S.state==='EMPTY'||S.state==='INPUT'){go(u.value?'INPUT':'EMPTY');setMsg(u.valu
+ const sync=()=>{$('#clr').hidden=!u.value;if(S.state==='INVALID_URL'||S.state==='UNSUPPORTED'||S.state==='ERROR'||S.state==='EMPTY'||S.state==='INPUT'){go(u.value?'INPUT':'EMPTY');setMsg(u.val
